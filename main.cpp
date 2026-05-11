@@ -1,5 +1,5 @@
 #include <opencv2/opencv.hpp>
-
+#include <filesystem>
 int main(int argc, char* argv[]){
 
 	if (argc < 2){
@@ -10,9 +10,15 @@ int main(int argc, char* argv[]){
 	cv::Mat image = cv::imread(argv[1]);
 
 
-	if (image.empty()) return -1;
+	if (image.empty()){
+		std::cerr << "Error Open image!\n";
+		return -1;
+	}
 
 	//Save image in PNG
-	cv::imwrite("output.png", image);
+	std::filesystem::path input(argv[1]);
+	std::string output = input.stem().string() + ".png"
+	
+	cv::imwrite(output, image);
 	return 0;
 }
